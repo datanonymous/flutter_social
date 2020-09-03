@@ -10,102 +10,118 @@ class PostsCarousel extends StatelessWidget {
 
   _buildPost(BuildContext context, int index) {
     Post post = posts[index];
-    return Stack(
-      children: [
-        Container(
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(0, 2),
-                blurRadius: 6,
-              ),
-            ],
+    return AnimatedBuilder(
+      animation: pageController,
+      builder: (BuildContext context, Widget widget) {
+        double value = 1;
+        if (pageController.position.haveDimensions) {
+          value = pageController.page - index;
+          value = (1 - (value.abs() * .25)).clamp(0, 1);
+        }
+        return Center(
+          child: SizedBox(
+            height: Curves.easeIn.transform(value) * 400,
+            child: widget,
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image(
-              height: 400,
-              width: 400,
-              image: AssetImage(post.imageUrl),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 10,
-          right: 10,
-          child: Container(
-            padding: EdgeInsets.all(12),
-            height: 110,
+        );
+      },
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white54,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  post.location,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        SizedBox(width: 6),
-                        Text(
-                          post.likes.toString(),
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.comment,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        SizedBox(width: 6),
-                        Text(
-                          post.comments.toString(),
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ],
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
                 ),
               ],
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image(
+                height: 400,
+                width: 400,
+                image: AssetImage(post.imageUrl),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-      ],
+          Positioned(
+            left: 10,
+            bottom: 10,
+            right: 10,
+            child: Container(
+              padding: EdgeInsets.all(12),
+              height: 110,
+              decoration: BoxDecoration(
+                color: Colors.white54,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    post.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    post.location,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            post.likes.toString(),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.comment,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            post.comments.toString(),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
