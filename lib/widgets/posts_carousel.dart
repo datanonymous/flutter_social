@@ -16,7 +16,7 @@ class PostsCarousel extends StatelessWidget {
         double value = 1;
         if (pageController.position.haveDimensions) {
           value = pageController.page - index;
-          value = (1 - (value.abs() * .25)).clamp(0, 1);
+          value = (1 - (value.abs() * .25)).clamp(0, 1); //values lower than .25 indicate larger neighbors
         }
         return Center(
           child: SizedBox(
